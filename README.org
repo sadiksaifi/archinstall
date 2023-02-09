@@ -30,6 +30,7 @@
   - [[#setting-up-autologinnot-recommended][Setting Up Autologin(not recommended)]]
   - [[#misc][Misc]]
 - [[#finished][Finished]]
+- [[#inspiration][Inspiration]]
 
 * ABOUT
 This is a automated dirty arch linux install script for installing arch linux with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
@@ -398,20 +399,6 @@ This will login automatically without asking password, I know this is not secure
 
 #+end_src
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* Inspiration
+Darek Taylor - [[https://gitlab.com/dtos][DTOS]]
+Luke Smith - [[https://github.com/LukeSmithxyz/LARBS][LARBS]]
