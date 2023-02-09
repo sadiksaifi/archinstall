@@ -3,19 +3,24 @@
 
 * TABLE OF CONTENTS :toc:
 - [[#about][ABOUT]]
-- [[#part-1][PART 1]]
+- [[#how-to-use][HOW TO USE]]
+  - [[#part-1][Part 1]]
+  - [[#part-2][Part 2]]
+  - [[#part-3][Part 3]]
+- [[#part-1-1][PART 1]]
+  - [[#setting-up-internet][Setting Up Internet]]
   - [[#setting-up][Setting Up]]
   - [[#partitioning-drive][Partitioning Drive]]
   - [[#mounting-partition][Mounting Partition]]
   - [[#installing-base-system][Installing Base System]]
-- [[#part-2][PART 2]]
+- [[#part-2-1][PART 2]]
   - [[#setting-up-1][Setting Up]]
   - [[#installing-grub][Installing Grub]]
-  - [[#adding-chaotic-aur-repo][Adding Chaotic AUR Repo]]
+  - [[#adding-additional-repos][Adding Additional Repos]]
   - [[#installing-packages][Installing Packages]]
   - [[#enable-system-services][Enable System Services]]
   - [[#setting-user-and-shell][Setting User and Shell]]
-- [[#part-3][PART 3]]
+- [[#part-3-1][PART 3]]
   - [[#making-neccessary-dirs][Making Neccessary Dirs]]
   - [[#installing-zapzsh-plugin-manager][Installing Zap(zsh plugin manager)]]
   - [[#syncing-dotfiles][Syncing Dotfiles]]
@@ -27,9 +32,73 @@
 - [[#finished][Finished]]
 
 * ABOUT
-This is a automated dirty arch linux install script for installing arch linux with my [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
+This is a automated dirty arch linux install script for installing arch linux with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
+
+* HOW TO USE
+
+** Part 1
+
+- This script contains three parts [[./arch_install.sh][arch_install.sh]], [[./arch_install2.sh][arch_install2.sh]], [[./arch_install.sh][arch_install3.sh]].
+- First download the vanilla [[https://archlinux.org/download/][Arch Linux]] iso.
+- Make a bootable pendrive with [[https://wiki.archlinux.org/title/Dd][dd]].:
+
+  #+begin_src shell
+
+    dd bs=4M if=path/to/archlinux-version-x86_64.iso of=/dev/sdx conv=fsync oflag=direct status=progress
+
+  #+end_src
+
+- Now boot from that bootable pendrive
+- After booting first connect to wired/wireless connection(prefered wired).
+- Now install [[https://git-scm.com][git]].
+
+  #+begin_src shell
+    pacman -Syy git
+  #+end_src
+
+- Clone this [[https://github.com/sadikeey/archinstall.git][archinstall]] repository and execute first [[./arch_install.sh][arch_install.sh]] script.
+
+  #+begin_src shell
+    git clone https://github.com/sadikeey/archinstall.git
+    cd archinstall
+    ./arch_install
+  #+end_src
+
+** Part 2
+- After chroot into newly installed system.
+- Execute [[./arch_install2.sh][arch_install2.sh]] script.
+
+  #+begin_src shell
+    ./arch_install2.sh
+  #+end_src
+
+** Part 3
+- After reboot into newly installed system.
+- Execute [[./arch_install3.sh][arch_install3.sh]] script.
+
+  #+begin_src shell
+    ./arch_install3.sh
+  #+end_src
 
 * PART 1
+** Setting Up Internet
+
+  #+begin_src shell
+
+    echo "##########################################################################"
+    echo "##   Choose a connection for internet between wired and wireless/wifi   ##"
+    echo "##            Type 1(for wired) / Type 2(for wireless/wifi)             ##"
+    echo "##########################################################################"
+    read connection
+
+    if [[ $connection = 2 ]] ; then
+        iwctl device list
+        iwctl station device scan
+        iwctl station device get-networks
+        iwctl --passphrase=passphrase station device connect ssid
+    fi
+
+  #+end_src
 
 ** Setting Up
 
@@ -39,7 +108,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
   printf '\033c'
   echo "Welcome to SDK's arch installer script"
-  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
+  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
   pacman --noconfirm -Sy archlinux-keyring
   loadkeys us
   timedatectl set-ntp true
@@ -57,19 +126,19 @@ This is a automated dirty arch linux install script for installing arch linux wi
   sleep 2
   lsblk
 
-  echo "Enter the linux partition: "
+  echo "Enter the Root partition as (/dev/drive_name): "
   read partition
   mkfs.ext4 $partition 
 
-  echo "Enter EFI partition: "
+  echo "Enter EFI partition as (/dev/drive_name): "
   read efipartition
   mkfs.vfat -F 32 $efipartition
 
-  echo "Enter Home partition: "
+  echo "Enter Home partition as (/dev/drive_name): "
   read homepartition
   mkfs.ext4 $homepartition
 
-  echo "Enter Swap partition: "
+  echo "Enter Swap partition as (/dev/drive_name): "
   read swappartition
   mkswap $swappartition
   swapon $swappartition
@@ -97,13 +166,15 @@ This is a automated dirty arch linux install script for installing arch linux wi
   cp pkglist.txt /mnt
   cp arch_install2.sh /mnt
   cp arch_install3.sh /mnt
+  echo "##########################################################################################"
+  echo "##    Now you are gonna chroot into new installed system so execute arch_install2.sh    ##"
+  echo "##########################################################################################"
   arch-chroot /mnt
   exit 
 
 #+end_src
 
 * PART 2
-
 ** Setting Up 
 
 #+begin_src shell :tangle arch_install2.sh
@@ -112,7 +183,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
   printf '\033c'
   pacman -S --noconfirm sed
-  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
+  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
   ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
   hwclock --systohc
   echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -144,7 +215,18 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+end_src
 
-** Adding Chaotic AUR Repo
+** Adding Additional Repos
+
+*** Multilib (for 32bit)
+
+#+begin_src shell
+
+  echo "[multilib]" >> /etc/pacman.conf
+  echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+
+#+end_src
+
+*** Chaotic Aur
 
 #+begin_src shell :tangle arch_install2.sh
 
@@ -189,13 +271,14 @@ This is a automated dirty arch linux install script for installing arch linux wi
   chsh -s /usr/bin/zsh $username
   [ -d "/home/$username/" ] || mkdir -p /home/$username
   cp arch_install3.sh /home/$username
-  echo "Pre-Installation Finish Reboot now"
+  echo "##########################################################################################"
+  echo "##    Preinstallation part2 has complete, so now reboot and execute arch_install3.sh    ##"
+  echo "##########################################################################################"
   exit
 
 #+end_src
 
 * PART 3
-
 ** Making Neccessary Dirs
 
 #+begin_src shell :tangle arch_install3.sh
@@ -280,11 +363,7 @@ This will login automatically without asking password, I know this is not secure
 #+begin_src shell :tangle arch_install3.sh
 
   [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-  sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "[Service]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo $HOME/.dotfiles/.misc/autologin.conf
 
 #+end_src
 

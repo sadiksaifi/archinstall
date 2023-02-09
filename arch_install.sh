@@ -2,7 +2,7 @@
 
 printf '\033c'
 echo "Welcome to SDK's arch installer script"
-sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
@@ -14,19 +14,19 @@ cfdisk $drive
 sleep 2
 lsblk
 
-echo "Enter the linux partition: "
+echo "Enter the Root partition as (/dev/drive_name): "
 read partition
 mkfs.ext4 $partition 
 
-echo "Enter EFI partition: "
+echo "Enter EFI partition as (/dev/drive_name): "
 read efipartition
 mkfs.vfat -F 32 $efipartition
 
-echo "Enter Home partition: "
+echo "Enter Home partition as (/dev/drive_name): "
 read homepartition
 mkfs.ext4 $homepartition
 
-echo "Enter Swap partition: "
+echo "Enter Swap partition as (/dev/drive_name): "
 read swappartition
 mkswap $swappartition
 swapon $swappartition
@@ -42,5 +42,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 cp pkglist.txt /mnt
 cp arch_install2.sh /mnt
 cp arch_install3.sh /mnt
+echo "##########################################################################################"
+echo "##    Now you are gonna chroot into new installed system so execute arch_install2.sh    ##"
+echo "##########################################################################################"
 arch-chroot /mnt
 exit

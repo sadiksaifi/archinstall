@@ -2,7 +2,7 @@
 
 printf '\033c'
 pacman -S --noconfirm sed
-sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -49,5 +49,7 @@ usermod -G libvirt -a $username
 chsh -s /usr/bin/zsh $username
 [ -d "/home/$username/" ] || mkdir -p /home/$username
 cp arch_install3.sh /home/$username
-echo "Pre-Installation Finish Reboot now"
+echo "##########################################################################################"
+echo "##    Preinstallation part2 has complete, so now reboot and execute arch_install3.sh    ##"
+echo "##########################################################################################"
 exit

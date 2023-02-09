@@ -37,11 +37,7 @@ rm -rf $HOME/paru-bin
 paru -S devour google-java-format nodejs-neovim
 
 [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
-sudo echo "[Service]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
-sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo $HOME/.dotfiles/.misc/autologin.conf
 
 # Setting Wallpaper
 cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
