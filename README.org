@@ -53,15 +53,19 @@ This is a automated dirty arch linux install script for installing arch linux wi
 - Now install [[https://git-scm.com][git]].
 
   #+begin_src shell
+
     pacman -Syy git
+
   #+end_src
 
 - Clone this [[https://github.com/sadikeey/archinstall.git][archinstall]] repository and execute first [[./arch_install.sh][arch_install.sh]] script.
 
   #+begin_src shell
+
     git clone https://github.com/sadikeey/archinstall.git
     cd archinstall
     ./arch_install
+
   #+end_src
 
 ** Part 2
@@ -69,7 +73,9 @@ This is a automated dirty arch linux install script for installing arch linux wi
 - Execute [[./arch_install2.sh][arch_install2.sh]] script.
 
   #+begin_src shell
+
     ./arch_install2.sh
+
   #+end_src
 
 ** Part 3
@@ -77,7 +83,9 @@ This is a automated dirty arch linux install script for installing arch linux wi
 - Execute [[./arch_install3.sh][arch_install3.sh]] script.
 
   #+begin_src shell
+
     ./arch_install3.sh
+
   #+end_src
 
 * PART 1
