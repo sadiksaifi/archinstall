@@ -108,6 +108,8 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+begin_src shell :tangle arch_install2.sh
 
+  #!/bin/bash
+
   printf '\033c'
   pacman -S --noconfirm sed
   sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
@@ -197,6 +199,8 @@ This is a automated dirty arch linux install script for installing arch linux wi
 ** Making Neccessary Dirs
 
 #+begin_src shell :tangle arch_install3.sh
+
+  #!/bin/bash
 
   printf '\033c'
   cd $HOME

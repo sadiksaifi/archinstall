@@ -1,3 +1,5 @@
+#!/bin/bash
+
 printf '\033c'
 pacman -S --noconfirm sed
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 8/" /etc/pacman.conf
