@@ -2,6 +2,31 @@
 #+AUTHOR: SADIK SAIFI
 #+PROPERTY: header-args :tangle arch_install.sh
 
+* TABLE OF CONTENTS :toc:
+- [[#about][ABOUT]]
+- [[#part-1][PART 1]]
+  - [[#setting-up][Setting Up]]
+  - [[#partitioning-drive][Partitioning Drive]]
+  - [[#mounting-partition][Mounting Partition]]
+  - [[#installing-base-system][Installing Base System]]
+- [[#part-2][PART 2]]
+  - [[#setting-up-1][Setting Up]]
+  - [[#installing-grub][Installing Grub]]
+  - [[#adding-chaotic-aur-repo][Adding Chaotic AUR Repo]]
+  - [[#installing-packages][Installing Packages]]
+  - [[#enable-system-services][Enable System Services]]
+  - [[#setting-user-and-shell][Setting User and Shell]]
+- [[#part-3][PART 3]]
+  - [[#making-neccessary-dirs][Making Neccessary Dirs]]
+  - [[#installing-zapzsh-plugin-manager][Installing Zap(zsh plugin manager)]]
+  - [[#syncing-dotfiles][Syncing Dotfiles]]
+  - [[#installing-dmenu][Installing Dmenu]]
+  - [[#setting-up-xorg-stuff][Setting up Xorg stuff]]
+  - [[#installing-aur-helperparu][Installing AUR helper(paru)]]
+  - [[#setting-up-autologinnot-recommended][Setting Up Autologin(not recommended)]]
+  - [[#misc][Misc]]
+- [[#finished][Finished]]
+
 * ABOUT
 This is a automated dirty arch linux install script for installing arch linux with my [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
 
