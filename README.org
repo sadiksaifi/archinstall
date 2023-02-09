@@ -1,6 +1,5 @@
 #+TITLE: ARCH INSTALL SCRIPT
 #+AUTHOR: SADIK SAIFI
-#+PROPERTY: header-args :tangle arch_install.sh
 
 * TABLE OF CONTENTS :toc:
 - [[#about][ABOUT]]
@@ -34,7 +33,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Setting Up
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install.sh
 
   #!/bin/bash
 
@@ -49,12 +48,13 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Partitioning Drive
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install.sh
 
   lsblk
   echo "Enter the drive and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition: "
   read drive
   cfdisk $drive 
+  sleep 2
   lsblk
 
   echo "Enter the linux partition: "
@@ -71,14 +71,14 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
   echo "Enter Swap partition: "
   read swappartition
-  mkfs.swap $swappartition
+  mkswap $swappartition
   swapon $swappartition
 
 #+end_src
 
 ** Mounting Partition
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install.sh
 
   mount $partition /mnt 
   mkdir -p /mnt/boot/EFI
@@ -90,14 +90,14 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Installing Base System
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install.sh
 
   pacstrap /mnt base linux linux-firmware
   genfstab -U /mnt >> /mnt/etc/fstab
-  sed '1,/^#part2$/d' `basename $0` > /mnt/arch_install2.sh
-  chmod +x /mnt/arch_install2.sh
   cp pkglist.txt /mnt
-  arch-chroot /mnt ./arch_install2.sh
+  cp arch_install2.sh /mnt
+  cp arch_install3.sh /mnt
+  arch-chroot /mnt
   exit 
 
 #+end_src
@@ -106,7 +106,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Setting Up 
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
   printf '\033c'
   pacman -S --noconfirm sed
@@ -116,22 +116,23 @@ This is a automated dirty arch linux install script for installing arch linux wi
   echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
   locale-gen
   echo "LANG=en_US.UTF-8" > /etc/locale.conf
-  echo "LC_CTYPE=en_US.UTF-8" > /etc/locale.conf
+  echo "LC_CTYPE=en_US.UTF-8" >> /etc/locale.conf
   echo "KEYMAP=us" > /etc/vconsole.conf
-  echo "Hostname: "
+  echo "Enter Hostname: "
   read hostname
   echo $hostname > /etc/hostname
   echo "127.0.0.1       localhost" >> /etc/hosts
   echo "::1             localhost" >> /etc/hosts
   echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
   mkinitcpio -P
+  echo "Enter root password: "
   passwd
 
 #+end_src
 
 ** Installing Grub
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
   pacman --noconfirm -S grub efibootmgr os-prober
   grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
@@ -143,7 +144,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Adding Chaotic AUR Repo
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
   pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
   pacman-key --lsign-key FBA220DFC880C036
@@ -155,16 +156,15 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Installing Packages
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
-  pacman --needed --ask 4 -Sy - < pkglist.txt || error "Failed to install required packages."
+  pacman --needed --ask 4 -Syy - < pkglist.txt || error "Failed to install required packages."
 
 #+end_src
 
-
 ** Enable System Services
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
   systemctl enable NetworkManager 
   systemctl enable libvirtd
@@ -175,21 +175,20 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Setting User and Shell
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
-  rm /bin/sh
-  ln -s dash /bin/sh
   echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
   echo "Enter Username: "
   read username
-  useradd -m -G wheel -s /bin/zsh $username
+  useradd -m $username
   passwd $username
+  usermod -aG wheel,audio,video,storage $username
+  usermod -G libvirt -a $username
+  chsh -s /usr/bin/zsh $username
+  [ -d "/home/$username/" ] || mkdir -p /home/$username
+  cp arch_install3.sh /home/$username
   echo "Pre-Installation Finish Reboot now"
-  ai3_path=/home/$username/arch_install3.sh
-  sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
-  chown $username:$username $ai3_path
-  chmod +x $ai3_path
-  su -c $ai3_path -s /bin/sh $username
+  exit
 
 #+end_src
 
@@ -197,7 +196,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Making Neccessary Dirs
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   printf '\033c'
   cd $HOME
@@ -214,10 +213,9 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+end_src
 
-
 ** Installing Zap(zsh plugin manager)
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
@@ -225,7 +223,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Syncing Dotfiles
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   git clone https://github.com/sadikeey/dotfiles.git $HOME/.dotfiles
   cd $HOME/.dotfiles
@@ -236,16 +234,18 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Installing Dmenu
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   git clone https://github.com/sadikeey/dmenu.git $HOME/.local/src/dmenu
-  sudo make -C ~/.local/src/dmenu install
+  cd $HOME/.local/src/dmenu
+  sudo make clean install
+  cd $HOME
 
 #+end_src
 
 ** Setting up Xorg stuff
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   [ -d "/etc/X11/xorg.conf.d" ] || sudo mkdir -p /etc/X11/xorg.conf.d
   sudo cp $HOME/.dotfiles/.misc/configs/etc-X11-xorg.conf.d/* /etc/X11/xorg.conf.d/
@@ -254,11 +254,11 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Installing AUR helper(paru)
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   git clone --depth=1 https://aur.archlinux.org/paru-bin.git $HOME/paru-bin
   cd $HOME/paru-bin
-  sudo makepkg -si
+  makepkg -si
   cd $HOME
   rm -rf $HOME/paru-bin
 
@@ -266,27 +266,29 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 *** Installing packages from aur
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
   paru -S devour google-java-format nodejs-neovim
 #+end_src
 
 ** Setting Up Autologin(not recommended)
 This will login automatically without asking password, I know this is not secure but I don't care.
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
   sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "[Service]"
-  sudo echo "ExecStart="
-  sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM"
-  sudo echo "Type=simple"
+  sudo echo "[Service]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 
 #+end_src
 
 ** Misc
 
-#+begin_src shell
+*** Setting Wallpaper
+
+#+begin_src shell :tangle arch_install3.sh
 
   # Setting Wallpaper
   cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
@@ -295,7 +297,7 @@ This will login automatically without asking password, I know this is not secure
 
 * Finished
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   echo "#################################################"
   echo "## You have successfully installed the system! ##"

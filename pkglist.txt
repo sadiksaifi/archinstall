@@ -24,7 +24,6 @@ ffmpeg
 fzf
 gimp
 gnome-keyring
-google-java-format
 gpick
 gzip
 hicolor-icon-theme
@@ -68,7 +67,7 @@ pop-gtk-theme
 python
 python-pip
 qalculate-gtk
-qemu
+qemu-base
 ripgrep
 spotify
 starship
@@ -114,3 +113,4 @@ xorg
 xwallpaper
 zathura
 zathura-pdf-mupdf
+zsh
