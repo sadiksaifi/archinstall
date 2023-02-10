@@ -104,6 +104,8 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+end_src
 
+- After installation of [[./arch_install.sh][arch_install.sh]] , just reboot and *ENJOY NEWLY INSTALLED ARCH LINUX*.
+
 * PART 1
 ** Setting Up
 
