@@ -63,7 +63,7 @@ read $username
 touch "/etc/systemd/system/getty@tty1.service.d/autologin.conf"
 echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin $username %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 
 echo "#################################################"
