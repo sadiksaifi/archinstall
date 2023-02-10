@@ -129,25 +129,35 @@ This is a dirty little script to automatically install and setup a working arch 
 #+begin_src shell :tangle arch_install.sh
 
   lsblk
-  echo "Enter the drive and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition: "
+  echo "###############################################################################################################"
+  echo "##    Enter drive(/dev/drive_name) and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition:   ##"
+  echo "###############################################################################################################"
   read drive
   cfdisk $drive 
   sleep 2
-  lsblk
+  lsblk -f
 
-  echo "Enter the Root partition as (/dev/drive_name): "
+  echo "######################################################"
+  echo "##    Enter Root partition as (/dev/drive_name):    ##"
+  echo "######################################################"
   read partition
   mkfs.ext4 $partition 
 
-  echo "Enter EFI partition as (/dev/drive_name): "
+  echo "#####################################################"
+  echo "##    Enter EFI partition as (/dev/drive_name):    ##"
+  echo "#####################################################"
   read efipartition
   mkfs.vfat -F 32 $efipartition
 
-  echo "Enter Home partition as (/dev/drive_name): "
+  echo "######################################################"
+  echo "##    Enter Home partition as (/dev/drive_name):    ##"
+  echo "######################################################"
   read homepartition
   mkfs.ext4 $homepartition
 
-  echo "Enter Swap partition as (/dev/drive_name): "
+  echo "######################################################"
+  echo "##    Enter Swap partition as (/dev/drive_name):    ##"
+  echo "######################################################"
   read swappartition
   mkswap $swappartition
   swapon $swappartition
@@ -175,9 +185,9 @@ This is a dirty little script to automatically install and setup a working arch 
   cp pkglist.txt /mnt
   cp arch_install2.sh /mnt
   cp arch_install3.sh /mnt
-  echo "##########################################################################################"
-  echo "##    Now you are gonna chroot into new installed system so execute arch_install2.sh    ##"
-  echo "##########################################################################################"
+  echo "########################################"
+  echo "##    Now execute arch_install2.sh    ##"
+  echo "########################################"
   arch-chroot /mnt
   exit 
 
@@ -200,14 +210,19 @@ This is a dirty little script to automatically install and setup a working arch 
   echo "LANG=en_US.UTF-8" > /etc/locale.conf
   echo "LC_CTYPE=en_US.UTF-8" >> /etc/locale.conf
   echo "KEYMAP=us" > /etc/vconsole.conf
-  echo "Enter Hostname: "
+
+  echo "############################"
+  echo "##    Enter Hostname:     ##"
+  echo "############################"
   read hostname
   echo $hostname > /etc/hostname
   echo "127.0.0.1       localhost" >> /etc/hosts
   echo "::1             localhost" >> /etc/hosts
   echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
   mkinitcpio -P
-  echo "Enter root password: "
+  echo "################################"
+  echo "##    Enter root password:    ##"
+  echo "################################"
   passwd
 
 #+end_src
@@ -272,18 +287,24 @@ This is a dirty little script to automatically install and setup a working arch 
 #+begin_src shell :tangle arch_install2.sh
 
   echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-  echo "Enter Username: "
+
+  echo "###########################"
+  echo "##    Enter Username:    ##"
+  echo "###########################"
   read username
   useradd -m $username
+  echo "##################################"
+  echo "##    Enter User's Password:    ##"
+  echo "##################################"
   passwd $username
   usermod -aG wheel,audio,video,storage $username
   usermod -G libvirt -a $username
   chsh -s /usr/bin/zsh $username
   [ -d "/home/$username/" ] || mkdir -p /home/$username
-  cp arch_install3.sh /home/$username
-  echo "##########################################################################################"
-  echo "##    Preinstallation part2 has complete, so now reboot and execute arch_install3.sh    ##"
-  echo "##########################################################################################"
+  cp arch_install3.sh /home/$username/
+  echo "###########################################################################################"
+  echo "##    Pre-installation part2 has complete, so now reboot and execute arch_install3.sh    ##"
+  echo "###########################################################################################"
   exit
 
 #+end_src
@@ -387,6 +408,7 @@ This is a dirty little script to automatically install and setup a working arch 
 
   cd $HOME/.config/emacs
   git remote set-url --push origin git@github.com:sadikeey/emacs.git
+  cd $HOME
 
 #+end_src
 ** Misc
@@ -414,16 +436,17 @@ This will login automatically without asking password, I know this is not secure
 
 #+begin_src shell :tangle arch_install3.sh
 
-  sudo su
-  echo "Enter your username for autologin: "
+  echo "##############################################"
+  echo "##    Enter your username for autologin:    ##"
+  echo "##############################################"
   read $username
 
-  [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || mkdir -p /etc/systemd/system/getty@tty1.service.d/
-  touch "/etc/systemd/system/getty@tty1.service.d/autologin.conf"
-  echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin $username %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
+  sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin $username %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+  sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 
 #+end_src
 

@@ -10,25 +10,35 @@ loadkeys us
 timedatectl set-ntp true
 
 lsblk
-echo "Enter the drive and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition: "
+echo "###############################################################################################################"
+echo "##    Enter drive(/dev/drive_name) and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition:   ##"
+echo "###############################################################################################################"
 read drive
 cfdisk $drive 
 sleep 2
-lsblk
+lsblk -f
 
-echo "Enter the Root partition as (/dev/drive_name): "
+echo "######################################################"
+echo "##    Enter Root partition as (/dev/drive_name):    ##"
+echo "######################################################"
 read partition
 mkfs.ext4 $partition 
 
-echo "Enter EFI partition as (/dev/drive_name): "
+echo "#####################################################"
+echo "##    Enter EFI partition as (/dev/drive_name):    ##"
+echo "#####################################################"
 read efipartition
 mkfs.vfat -F 32 $efipartition
 
-echo "Enter Home partition as (/dev/drive_name): "
+echo "######################################################"
+echo "##    Enter Home partition as (/dev/drive_name):    ##"
+echo "######################################################"
 read homepartition
 mkfs.ext4 $homepartition
 
-echo "Enter Swap partition as (/dev/drive_name): "
+echo "######################################################"
+echo "##    Enter Swap partition as (/dev/drive_name):    ##"
+echo "######################################################"
 read swappartition
 mkswap $swappartition
 swapon $swappartition
@@ -44,8 +54,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 cp pkglist.txt /mnt
 cp arch_install2.sh /mnt
 cp arch_install3.sh /mnt
-echo "##########################################################################################"
-echo "##    Now you are gonna chroot into new installed system so execute arch_install2.sh    ##"
-echo "##########################################################################################"
+echo "########################################"
+echo "##    Now execute arch_install2.sh    ##"
+echo "########################################"
 arch-chroot /mnt
 exit

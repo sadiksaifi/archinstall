@@ -10,14 +10,19 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "LC_CTYPE=en_US.UTF-8" >> /etc/locale.conf
 echo "KEYMAP=us" > /etc/vconsole.conf
-echo "Enter Hostname: "
+
+echo "############################"
+echo "##    Enter Hostname:     ##"
+echo "############################"
 read hostname
 echo $hostname > /etc/hostname
 echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1             localhost" >> /etc/hosts
 echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
 mkinitcpio -P
-echo "Enter root password: "
+echo "################################"
+echo "##    Enter root password:    ##"
+echo "################################"
 passwd
 
 pacman --noconfirm -S grub efibootmgr os-prober
@@ -44,16 +49,22 @@ systemctl enable auto-cpufreq
 systemctl enable bluetooth
 
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-echo "Enter Username: "
+
+echo "###########################"
+echo "##    Enter Username:    ##"
+echo "###########################"
 read username
 useradd -m $username
+echo "##################################"
+echo "##    Enter User's Password:    ##"
+echo "##################################"
 passwd $username
 usermod -aG wheel,audio,video,storage $username
 usermod -G libvirt -a $username
 chsh -s /usr/bin/zsh $username
 [ -d "/home/$username/" ] || mkdir -p /home/$username
-cp arch_install3.sh /home/$username
-echo "##########################################################################################"
-echo "##    Preinstallation part2 has complete, so now reboot and execute arch_install3.sh    ##"
-echo "##########################################################################################"
+cp arch_install3.sh /home/$username/
+echo "###########################################################################################"
+echo "##    Pre-installation part2 has complete, so now reboot and execute arch_install3.sh    ##"
+echo "###########################################################################################"
 exit
