@@ -1,6 +1,20 @@
 #+TITLE: ARCH INSTALL SCRIPT
 #+AUTHOR: SADIK SAIFI
 
+* ABOUT
+This is a dirty little script to automatically install and setup a working arch linux environment with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
+
+[[./images/home.png]]
+
+** Programs Installed
+      - Xmonad WM
+      - Xmobar
+      - Alacritty
+      - Emacs
+      - Neovim   
+      - LaTeX
+      - Brave
+
 * TABLE OF CONTENTS :toc:
 - [[#about][ABOUT]]
   - [[#programs-installed][Programs Installed]]
@@ -33,20 +47,6 @@
   - [[#setting-up-autologinnot-recommended][Setting Up Autologin(not recommended)]]
 - [[#finished][Finished]]
 - [[#inspiration][Inspiration]]
-
-* ABOUT
-This is a dirty little script to automatically install and setup a working arch linux environment with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
-
-[[./images/home.png]]
-
-** Programs Installed
-      - Xmonad WM
-      - Xmobar
-      - Alacritty
-      - Emacs
-      - Neovim   
-      - LaTeX
-      - Brave
 
 * HOW TO USE
 
