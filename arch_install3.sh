@@ -8,6 +8,7 @@ cd $HOME
 [ -d "$HOME/.local/src" ] || mkdir -p $HOME/.local/src
 [ -d "$HOME/Downloads" ] || mkdir -p $HOME/Downloads
 [ -d "$HOME/Documents" ] || mkdir -p $HOME/Documents
+[ -d "$HOME/Pictures" ] || mkdir -p $HOME/Pictures
 [ -d "$HOME/Projects" ] || mkdir -p $HOME/Projects
 [ -d "$HOME/Music" ] || mkdir -p $HOME/Music
 [ -d "$HOME/Videos" ] || mkdir -p $HOME/Videos
