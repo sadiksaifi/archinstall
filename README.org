@@ -3,6 +3,7 @@
 
 * TABLE OF CONTENTS :toc:
 - [[#about][ABOUT]]
+  - [[#programs-installed][Programs Installed]]
 - [[#how-to-use][HOW TO USE]]
   - [[#part-1][Part 1]]
   - [[#part-2][Part 2]]
@@ -34,7 +35,16 @@
 - [[#inspiration][Inspiration]]
 
 * ABOUT
-This is a automated dirty arch linux install script for installing arch linux with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
+This is a dirty little script to automatically install and setup a working arch linux environment with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
+
+** Programs Installed
+      - Xmonad WM
+      - Xmobar
+      - Alacritty
+      - Emacs
+      - Neovim   
+      - LaTeX
+      - Brave
 
 * HOW TO USE
 
@@ -42,17 +52,10 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 - This script contains three parts [[./arch_install.sh][arch_install.sh]], [[./arch_install2.sh][arch_install2.sh]], [[./arch_install.sh][arch_install3.sh]].
 - First download the vanilla [[https://archlinux.org/download/][Arch Linux]] iso.
-- Make a bootable pendrive with [[https://wiki.archlinux.org/title/Dd][dd]].:
-
-#+begin_src shell
-
-  dd bs=4M if=path/to/archlinux-version-x86_64.iso of=/dev/sdx conv=fsync oflag=direct status=progress
-
-#+end_src
-
-- Now boot from that bootable pendrive
-- After booting first connect to wired/wireless connection(prefered wired).
--  Setting Up Internet with [[https://wiki.archlinux.org/title/iwd][iwd]].
+- Make a bootable pendrive with [[https://www.balena.io/etcher][balena etcher]] / [[https://rufus.ie][rufus]] or with any other disk burner utility. 
+- Now boot from that arch linux bootable pendrive.
+- After booting into arch linux first connect to wired/wireless connection(prefer wired).
+-  If you are using wireless/wifi use [[https://wiki.archlinux.org/title/iwd][iwd]] to connect to internet.
 
 #+begin_src shell
 
@@ -63,7 +66,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+end_src
 
-- Now install [[https://git-scm.com][git]].
+- After connecting to internet, now install [[https://git-scm.com][git]].
 
 #+begin_src shell
 
@@ -71,7 +74,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+end_src
 
-- Clone this [[https://github.com/sadikeey/archinstall.git][archinstall]] repository and execute first [[./arch_install.sh][arch_install.sh]] script.
+- Then clone this [[https://github.com/sadikeey/archinstall.git][archinstall]] repository and execute first [[./arch_install.sh][arch_install.sh]] script.
 
 #+begin_src shell
 
@@ -369,7 +372,6 @@ This is a automated dirty arch linux install script for installing arch linux wi
 #+begin_src shell :tangle arch_install3.sh
   paru -S devour google-java-format nodejs-neovim
 #+end_src
-
 
 ** Updating remote url of my repos.
 

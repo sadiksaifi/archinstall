@@ -56,6 +56,7 @@ sudo cp $HOME/.dotfiles/.misc/autologin.conf
 cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
 
 rm $HOME/bash*
+mv $HOME/.icons $HOME/.local/share/icons
 
 echo "#################################################"
 echo "## You have successfully installed the system! ##"
