@@ -8,7 +8,6 @@
   - [[#part-2][Part 2]]
   - [[#part-3][Part 3]]
 - [[#part-1-1][PART 1]]
-  - [[#setting-up-internet][Setting Up Internet]]
   - [[#setting-up][Setting Up]]
   - [[#partitioning-drive][Partitioning Drive]]
   - [[#mounting-partition][Mounting Partition]]
@@ -25,8 +24,10 @@
   - [[#installing-zapzsh-plugin-manager][Installing Zap(zsh plugin manager)]]
   - [[#syncing-dotfiles][Syncing Dotfiles]]
   - [[#installing-dmenu][Installing Dmenu]]
+  - [[#installing-emacs-dots][Installing Emacs dots]]
   - [[#setting-up-xorg-stuff][Setting up Xorg stuff]]
   - [[#installing-aur-helperparu][Installing AUR helper(paru)]]
+  - [[#updating-remote-url-of-my-repos][Updating remote url of my repos.]]
   - [[#setting-up-autologinnot-recommended][Setting Up Autologin(not recommended)]]
   - [[#misc][Misc]]
 - [[#finished][Finished]]
@@ -43,72 +44,64 @@ This is a automated dirty arch linux install script for installing arch linux wi
 - First download the vanilla [[https://archlinux.org/download/][Arch Linux]] iso.
 - Make a bootable pendrive with [[https://wiki.archlinux.org/title/Dd][dd]].:
 
-  #+begin_src shell
+#+begin_src shell
 
-    dd bs=4M if=path/to/archlinux-version-x86_64.iso of=/dev/sdx conv=fsync oflag=direct status=progress
+  dd bs=4M if=path/to/archlinux-version-x86_64.iso of=/dev/sdx conv=fsync oflag=direct status=progress
 
-  #+end_src
+#+end_src
 
 - Now boot from that bootable pendrive
 - After booting first connect to wired/wireless connection(prefered wired).
+-  Setting Up Internet with [[https://wiki.archlinux.org/title/iwd][iwd]].
+
+#+begin_src shell
+
+  iwctl device list
+  iwctl station device scan
+  iwctl station device get-networks
+  iwctl --passphrase=passphrase station device connect ssid
+
+#+end_src
+
 - Now install [[https://git-scm.com][git]].
 
-  #+begin_src shell
+#+begin_src shell
 
-    pacman -Syy git
+  pacman -Syy git
 
-  #+end_src
+#+end_src
 
 - Clone this [[https://github.com/sadikeey/archinstall.git][archinstall]] repository and execute first [[./arch_install.sh][arch_install.sh]] script.
 
-  #+begin_src shell
+#+begin_src shell
 
-    git clone https://github.com/sadikeey/archinstall.git
-    cd archinstall
-    ./arch_install
+   git clone https://github.com/sadikeey/archinstall.git
+   cd archinstall
+   ./arch_install
 
-  #+end_src
+#+end_src
 
 ** Part 2
 - After chroot into newly installed system.
 - Execute [[./arch_install2.sh][arch_install2.sh]] script.
 
-  #+begin_src shell
+#+begin_src shell
 
-    ./arch_install2.sh
+  ./arch_install2.sh
 
-  #+end_src
+#+end_src
 
 ** Part 3
 - After reboot into newly installed system.
 - Execute [[./arch_install3.sh][arch_install3.sh]] script.
 
-  #+begin_src shell
+#+begin_src shell
 
-    ./arch_install3.sh
+  ./arch_install3.sh
 
-  #+end_src
+#+end_src
 
 * PART 1
-** Setting Up Internet
-
-  #+begin_src shell
-
-    echo "##########################################################################"
-    echo "##   Choose a connection for internet between wired and wireless/wifi   ##"
-    echo "##            Type 1(for wired) / Type 2(for wireless/wifi)             ##"
-    echo "##########################################################################"
-    read connection
-
-    if [[ $connection = 2 ]] ; then
-        iwctl device list
-        iwctl station device scan
-        iwctl station device get-networks
-        iwctl --passphrase=passphrase station device connect ssid
-    fi
-
-  #+end_src
-
 ** Setting Up
 
 #+begin_src shell :tangle arch_install.sh
@@ -116,7 +109,9 @@ This is a automated dirty arch linux install script for installing arch linux wi
   #!/bin/bash
 
   printf '\033c'
-  echo "Welcome to SDK's arch installer script"
+  echo "#######################################################"
+  echo "##    Welcome to SDK's arch linux install script.    ##"
+  echo "#######################################################"
   sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
   pacman --noconfirm -Sy archlinux-keyring
   loadkeys us
@@ -263,6 +258,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
   systemctl enable libvirtd
   systemctl enable tlp 
   systemctl enable auto-cpufreq
+  systemctl enable bluetooth
 
 #+end_src
 
@@ -339,6 +335,14 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 #+end_src
 
+** Installing Emacs dots
+
+#+begin_src shell
+  rm -rf $HOME/.config/emacs
+  git clone https://github.com/sadikeey/emacs.git $HOME/.config/emacs
+  rm -rf $HOME/.emacs.d
+#+end_src
+
 ** Setting up Xorg stuff
 
 #+begin_src shell :tangle arch_install3.sh
@@ -366,13 +370,28 @@ This is a automated dirty arch linux install script for installing arch linux wi
   paru -S devour google-java-format nodejs-neovim
 #+end_src
 
+
+** Updating remote url of my repos.
+
+#+begin_src shell
+
+  cd $HOME/.dotfiles
+  git remote set-url --push origin git@github.com:sadikeey/dotfiles.git
+
+  cd $HOME/.local/src/dmenu
+  git remote set-url --push origin git@github.com:sadikeey/dmenu.git
+
+  cd $HOME/.config/emacs
+  git remote set-url --push origin git@github.com:sadikeey/emacs.git
+
+#+end_src
 ** Setting Up Autologin(not recommended)
 This will login automatically without asking password, I know this is not secure but I don't care.
 
 #+begin_src shell :tangle arch_install3.sh
 
   [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-  sudo $HOME/.dotfiles/.misc/autologin.conf
+  sudo cp $HOME/.dotfiles/.misc/autologin.conf
 
 #+end_src
 
