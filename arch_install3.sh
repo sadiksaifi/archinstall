@@ -49,14 +49,22 @@ git remote set-url --push origin git@github.com:sadikeey/dmenu.git
 cd $HOME/.config/emacs
 git remote set-url --push origin git@github.com:sadikeey/emacs.git
 
-[ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-sudo cp $HOME/.dotfiles/.misc/autologin.conf
-
 # Setting Wallpaper
 cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
 
 rm $HOME/bash*
 mv $HOME/.icons $HOME/.local/share/icons
+
+sudo su
+echo "Enter your username for autologin: "
+read $username
+
+[ -d "/etc/systemd/system/getty@tty1.service.d/" ] || mkdir -p /etc/systemd/system/getty@tty1.service.d/
+touch "/etc/systemd/system/getty@tty1.service.d/autologin.conf"
+echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin sdk %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 
 echo "#################################################"
 echo "## You have successfully installed the system! ##"
