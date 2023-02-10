@@ -1,7 +1,9 @@
 #!/bin/bash
 
 printf '\033c'
-echo "Welcome to SDK's arch installer script"
+echo "#######################################################"
+echo "##    Welcome to SDK's arch linux install script.    ##"
+echo "#######################################################"
 sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us

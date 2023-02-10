@@ -223,7 +223,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 *** Multilib (for 32bit)
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install2.sh
 
   echo "[multilib]" >> /etc/pacman.conf
   echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
@@ -337,7 +337,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Installing Emacs dots
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
   rm -rf $HOME/.config/emacs
   git clone https://github.com/sadikeey/emacs.git $HOME/.config/emacs
   rm -rf $HOME/.emacs.d
@@ -373,7 +373,7 @@ This is a automated dirty arch linux install script for installing arch linux wi
 
 ** Updating remote url of my repos.
 
-#+begin_src shell
+#+begin_src shell :tangle arch_install3.sh
 
   cd $HOME/.dotfiles
   git remote set-url --push origin git@github.com:sadikeey/dotfiles.git
@@ -406,6 +406,14 @@ This will login automatically without asking password, I know this is not secure
 
 #+end_src
 
+*** Cleaning Up Home Dir
+
+#+begin_src shell :tangle arch_install3.sh
+
+  rm $HOME/bash*
+
+#+end_src
+
 * Finished
 
 #+begin_src shell :tangle arch_install3.sh
@@ -413,7 +421,7 @@ This will login automatically without asking password, I know this is not secure
   echo "#################################################"
   echo "## You have successfully installed the system! ##"
   echo "#################################################"
-
+  sleep 2
   exit 
 
 #+end_src

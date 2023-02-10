@@ -25,6 +25,10 @@ cd $HOME/.local/src/dmenu
 sudo make clean install
 cd $HOME
 
+rm -rf $HOME/.config/emacs
+git clone https://github.com/sadikeey/emacs.git $HOME/.config/emacs
+rm -rf $HOME/.emacs.d
+
 [ -d "/etc/X11/xorg.conf.d" ] || sudo mkdir -p /etc/X11/xorg.conf.d
 sudo cp $HOME/.dotfiles/.misc/configs/etc-X11-xorg.conf.d/* /etc/X11/xorg.conf.d/
 
@@ -36,14 +40,25 @@ rm -rf $HOME/paru-bin
 
 paru -S devour google-java-format nodejs-neovim
 
+cd $HOME/.dotfiles
+git remote set-url --push origin git@github.com:sadikeey/dotfiles.git
+
+cd $HOME/.local/src/dmenu
+git remote set-url --push origin git@github.com:sadikeey/dmenu.git
+
+cd $HOME/.config/emacs
+git remote set-url --push origin git@github.com:sadikeey/emacs.git
+
 [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-sudo $HOME/.dotfiles/.misc/autologin.conf
+sudo cp $HOME/.dotfiles/.misc/autologin.conf
 
 # Setting Wallpaper
 cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
 
+rm $HOME/bash*
+
 echo "#################################################"
 echo "## You have successfully installed the system! ##"
 echo "#################################################"
-
+sleep 2
 exit
