@@ -411,6 +411,7 @@ This will login automatically without asking password, I know this is not secure
 #+begin_src shell :tangle arch_install3.sh
 
   rm $HOME/bash*
+  mv $HOME/.icons $HOME/.local/share/icons
 
 #+end_src
 
