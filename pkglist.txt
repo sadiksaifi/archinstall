@@ -42,6 +42,7 @@ neovim
 neovim-nvim-treesitter
 networkmanager
 network-manager-applet
+network-manager-dmenu-git
 nodejs
 noto-fonts
 noto-fonts-emoji

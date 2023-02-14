@@ -41,7 +41,7 @@ This is a dirty little script to automatically install and setup a working arch 
   - [[#installing-dmenu][Installing Dmenu]]
   - [[#installing-emacs-dots][Installing Emacs dots]]
   - [[#setting-up-xorg-stuff][Setting up Xorg stuff]]
-  - [[#installing-aur-helperparu][Installing AUR helper(paru)]]
+  - [[#aur-helperparu][AUR helper(paru)]]
   - [[#updating-remote-url-of-my-repos][Updating remote url of my repos.]]
   - [[#misc][Misc]]
   - [[#setting-up-autologinnot-recommended][Setting Up Autologin(not recommended)]]
@@ -381,7 +381,9 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+end_src
 
-** Installing AUR helper(paru)
+** AUR helper(paru)
+
+*** Installing pare
 
 #+begin_src shell :tangle arch_install3.sh
 
@@ -396,7 +398,7 @@ This is a dirty little script to automatically install and setup a working arch 
 *** Installing packages from aur
 
 #+begin_src shell :tangle arch_install3.sh
-  paru -S devour google-java-format nodejs-neovim
+  paru -S devour google-java-format nodejs-neovim dmenu-bluetooth
 #+end_src
 
 ** Updating remote url of my repos.
