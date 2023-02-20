@@ -51,7 +51,6 @@ cd $HOME/.config/emacs
 git remote set-url --push origin git@github.com:sadikeey/emacs.git
 cd $HOME
 
-# Setting Wallpaper
 cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
 
 rm $HOME/bash*

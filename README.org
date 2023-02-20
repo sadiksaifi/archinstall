@@ -7,13 +7,13 @@ This is a dirty little script to automatically install and setup a working arch 
 [[./images/home.png]]
 
 ** Programs Installed
-      - Xmonad WM
-      - Xmobar
-      - Alacritty
-      - Emacs
-      - Neovim   
-      - LaTeX
-      - Brave
+- Xmonad WM
+- Xmobar
+- Alacritty
+- Emacs
+- Neovim
+- LaTeX
+- Brave
 
 * TABLE OF CONTENTS :toc:
 - [[#about][ABOUT]]
@@ -113,16 +113,16 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install.sh
 
-  #!/bin/bash
+#!/bin/bash
 
-  printf '\033c'
-  echo "#######################################################"
-  echo "##    Welcome to SDK's arch linux install script.    ##"
-  echo "#######################################################"
-  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
-  pacman --noconfirm -Sy archlinux-keyring
-  loadkeys us
-  timedatectl set-ntp true
+printf '\033c'
+echo "#######################################################"
+echo "##    Welcome to SDK's arch linux install script.    ##"
+echo "#######################################################"
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
+pacman --noconfirm -Sy archlinux-keyring
+loadkeys us
+timedatectl set-ntp true
 
 #+end_src
 
@@ -130,39 +130,39 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install.sh
 
-  lsblk
-  echo "###############################################################################################################"
-  echo "##    Enter drive(/dev/drive_name) and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition:   ##"
-  echo "###############################################################################################################"
-  read drive
-  cfdisk $drive 
-  sleep 2
-  lsblk -f
+lsblk
+echo "###############################################################################################################"
+echo "##    Enter drive(/dev/drive_name) and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition:   ##"
+echo "###############################################################################################################"
+read drive
+cfdisk $drive
+sleep 2
+lsblk -f
 
-  echo "######################################################"
-  echo "##    Enter Root partition as (/dev/drive_name):    ##"
-  echo "######################################################"
-  read partition
-  mkfs.ext4 $partition 
+echo "######################################################"
+echo "##    Enter Root partition as (/dev/drive_name):    ##"
+echo "######################################################"
+read partition
+mkfs.ext4 $partition
 
-  echo "#####################################################"
-  echo "##    Enter EFI partition as (/dev/drive_name):    ##"
-  echo "#####################################################"
-  read efipartition
-  mkfs.vfat -F 32 $efipartition
+echo "#####################################################"
+echo "##    Enter EFI partition as (/dev/drive_name):    ##"
+echo "#####################################################"
+read efipartition
+mkfs.vfat -F 32 $efipartition
 
-  echo "######################################################"
-  echo "##    Enter Home partition as (/dev/drive_name):    ##"
-  echo "######################################################"
-  read homepartition
-  mkfs.ext4 $homepartition
+echo "######################################################"
+echo "##    Enter Home partition as (/dev/drive_name):    ##"
+echo "######################################################"
+read homepartition
+mkfs.ext4 $homepartition
 
-  echo "######################################################"
-  echo "##    Enter Swap partition as (/dev/drive_name):    ##"
-  echo "######################################################"
-  read swappartition
-  mkswap $swappartition
-  swapon $swappartition
+echo "######################################################"
+echo "##    Enter Swap partition as (/dev/drive_name):    ##"
+echo "######################################################"
+read swappartition
+mkswap $swappartition
+swapon $swappartition
 
 #+end_src
 
@@ -170,11 +170,11 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install.sh
 
-  mount $partition /mnt 
-  mkdir -p /mnt/boot/EFI
-  mkdir -p /mnt/home
-  mount $efipartition /mnt/boot/EFI 
-  mount $homepartition /mnt/home 
+mount $partition /mnt
+mkdir -p /mnt/boot/EFI
+mkdir -p /mnt/home
+mount $efipartition /mnt/boot/EFI
+mount $homepartition /mnt/home
 
 #+end_src
 
@@ -182,16 +182,16 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install.sh
 
-  pacstrap /mnt base linux linux-firmware
-  genfstab -U /mnt >> /mnt/etc/fstab
-  cp pkglist.txt /mnt
-  cp arch_install2.sh /mnt
-  cp arch_install3.sh /mnt
-  echo "########################################"
-  echo "##    Now execute arch_install2.sh    ##"
-  echo "########################################"
-  arch-chroot /mnt
-  exit 
+pacstrap /mnt base linux linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstab
+cp pkglist.txt /mnt
+cp arch_install2.sh /mnt
+cp arch_install3.sh /mnt
+echo "########################################"
+echo "##    Now execute arch_install2.sh    ##"
+echo "########################################"
+arch-chroot /mnt
+exit
 
 #+end_src
 
@@ -200,32 +200,32 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  #!/bin/bash
+#!/bin/bash
 
-  printf '\033c'
-  pacman -S --noconfirm sed
-  sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
-  ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
-  hwclock --systohc
-  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-  locale-gen
-  echo "LANG=en_US.UTF-8" > /etc/locale.conf
-  echo "LC_CTYPE=en_US.UTF-8" >> /etc/locale.conf
-  echo "KEYMAP=us" > /etc/vconsole.conf
+printf '\033c'
+pacman -S --noconfirm sed
+sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 5/" /etc/pacman.conf
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+hwclock --systohc
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "LC_CTYPE=en_US.UTF-8" >> /etc/locale.conf
+echo "KEYMAP=us" > /etc/vconsole.conf
 
-  echo "############################"
-  echo "##    Enter Hostname:     ##"
-  echo "############################"
-  read hostname
-  echo $hostname > /etc/hostname
-  echo "127.0.0.1       localhost" >> /etc/hosts
-  echo "::1             localhost" >> /etc/hosts
-  echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
-  mkinitcpio -P
-  echo "################################"
-  echo "##    Enter root password:    ##"
-  echo "################################"
-  passwd
+echo "############################"
+echo "##    Enter Hostname:     ##"
+echo "############################"
+read hostname
+echo $hostname > /etc/hostname
+echo "127.0.0.1       localhost" >> /etc/hosts
+echo "::1             localhost" >> /etc/hosts
+echo "127.0.1.1       $hostname.localdomain $hostname" >> /etc/hosts
+mkinitcpio -P
+echo "################################"
+echo "##    Enter root password:    ##"
+echo "################################"
+passwd
 
 #+end_src
 
@@ -233,11 +233,11 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  pacman --noconfirm -S grub efibootmgr os-prober
-  grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
-  sed -i 's/quiet/pci=noaer/g' /etc/default/grub
-  sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
-  grub-mkconfig -o /boot/grub/grub.cfg
+pacman --noconfirm -S grub efibootmgr os-prober
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
+sed -i 's/quiet/pci=noaer/g' /etc/default/grub
+sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
 
 #+end_src
 
@@ -247,8 +247,8 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  echo "[multilib]" >> /etc/pacman.conf
-  echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+echo "[multilib]" >> /etc/pacman.conf
+echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
 #+end_src
 
@@ -256,11 +256,11 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-  pacman-key --lsign-key FBA220DFC880C036
-  pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-  echo "[chaotic-aur]" >> /etc/pacman.conf
-  echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key FBA220DFC880C036
+pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+echo "[chaotic-aur]" >> /etc/pacman.conf
+echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
 
 #+end_src
 
@@ -268,7 +268,7 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  pacman --needed --ask 4 -Syy - < pkglist.txt || error "Failed to install required packages."
+pacman --needed --ask 4 -Syy - < pkglist.txt || error "Failed to install required packages."
 
 #+end_src
 
@@ -276,11 +276,11 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  systemctl enable NetworkManager 
-  systemctl enable libvirtd
-  systemctl enable tlp 
-  systemctl enable auto-cpufreq
-  systemctl enable bluetooth
+systemctl enable NetworkManager
+systemctl enable libvirtd
+systemctl enable tlp
+systemctl enable auto-cpufreq
+systemctl enable bluetooth
 
 #+end_src
 
@@ -288,26 +288,26 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install2.sh
 
-  echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-  echo "###########################"
-  echo "##    Enter Username:    ##"
-  echo "###########################"
-  read username
-  useradd -m $username
-  echo "##################################"
-  echo "##    Enter User's Password:    ##"
-  echo "##################################"
-  passwd $username
-  usermod -aG wheel,audio,video,storage $username
-  usermod -G libvirt -a $username
-  chsh -s /usr/bin/zsh $username
-  [ -d "/home/$username/" ] || mkdir -p /home/$username
-  cp arch_install3.sh /home/$username/
-  echo "###########################################################################################"
-  echo "##    Pre-installation part2 has complete, so now reboot and execute arch_install3.sh    ##"
-  echo "###########################################################################################"
-  exit
+echo "###########################"
+echo "##    Enter Username:    ##"
+echo "###########################"
+read username
+useradd -m $username
+echo "##################################"
+echo "##    Enter User's Password:    ##"
+echo "##################################"
+passwd $username
+usermod -aG wheel,audio,video,storage $username
+usermod -G libvirt -a $username
+chsh -s /usr/bin/zsh $username
+[ -d "/home/$username/" ] || mkdir -p /home/$username
+cp arch_install3.sh /home/$username/
+echo "###########################################################################################"
+echo "##    Pre-installation part2 has complete, so now reboot and execute arch_install3.sh    ##"
+echo "###########################################################################################"
+exit
 
 #+end_src
 
@@ -316,21 +316,21 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  #!/bin/bash
+#!/bin/bash
 
-  printf '\033c'
-  cd $HOME
+printf '\033c'
+cd $HOME
 
-  [ -d "$HOME/.config/share" ] || mkdir -p $HOME/.config
-  [ -d "$HOME/.local" ] || mkdir -p $HOME/.local/share
-  [ -d "$HOME/.local/src" ] || mkdir -p $HOME/.local/src
-  [ -d "$HOME/Downloads" ] || mkdir -p $HOME/Downloads
-  [ -d "$HOME/Documents" ] || mkdir -p $HOME/Documents
-  [ -d "$HOME/Pictures" ] || mkdir -p $HOME/Pictures
-  [ -d "$HOME/Projects" ] || mkdir -p $HOME/Projects
-  [ -d "$HOME/Music" ] || mkdir -p $HOME/Music
-  [ -d "$HOME/Videos" ] || mkdir -p $HOME/Videos
-  [ -d "$HOME/Repos" ] || mkdir -p $HOME/Repos
+[ -d "$HOME/.config/share" ] || mkdir -p $HOME/.config
+[ -d "$HOME/.local" ] || mkdir -p $HOME/.local/share
+[ -d "$HOME/.local/src" ] || mkdir -p $HOME/.local/src
+[ -d "$HOME/Downloads" ] || mkdir -p $HOME/Downloads
+[ -d "$HOME/Documents" ] || mkdir -p $HOME/Documents
+[ -d "$HOME/Pictures" ] || mkdir -p $HOME/Pictures
+[ -d "$HOME/Projects" ] || mkdir -p $HOME/Projects
+[ -d "$HOME/Music" ] || mkdir -p $HOME/Music
+[ -d "$HOME/Videos" ] || mkdir -p $HOME/Videos
+[ -d "$HOME/Repos" ] || mkdir -p $HOME/Repos
 
 #+end_src
 
@@ -338,7 +338,7 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
+zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
 #+end_src
 
@@ -346,10 +346,10 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  git clone https://github.com/sadikeey/dotfiles.git $HOME/.dotfiles
-  cd $HOME/.dotfiles
-  stow */
-  cd $HOME
+git clone https://github.com/sadikeey/dotfiles.git $HOME/.dotfiles
+cd $HOME/.dotfiles
+stow */
+cd $HOME
 
 #+end_src
 
@@ -357,27 +357,27 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  git clone https://github.com/sadikeey/dmenu.git $HOME/.local/src/dmenu
-  cd $HOME/.local/src/dmenu
-  sudo make clean install
-  cd $HOME
+git clone https://github.com/sadikeey/dmenu.git $HOME/.local/src/dmenu
+cd $HOME/.local/src/dmenu
+sudo make clean install
+cd $HOME
 
 #+end_src
 
 ** Installing Emacs dots
 
 #+begin_src shell :tangle arch_install3.sh
-  rm -rf $HOME/.config/emacs
-  git clone https://github.com/sadikeey/emacs.git $HOME/.config/emacs
-  rm -rf $HOME/.emacs.d
+rm -rf $HOME/.config/emacs
+git clone https://github.com/sadikeey/emacs.git $HOME/.config/emacs
+rm -rf $HOME/.emacs.d
 #+end_src
 
 ** Setting up Xorg stuff
 
 #+begin_src shell :tangle arch_install3.sh
 
-  [ -d "/etc/X11/xorg.conf.d" ] || sudo mkdir -p /etc/X11/xorg.conf.d
-  sudo cp $HOME/.dotfiles/.misc/configs/etc-X11-xorg.conf.d/* /etc/X11/xorg.conf.d/
+[ -d "/etc/X11/xorg.conf.d" ] || sudo mkdir -p /etc/X11/xorg.conf.d
+sudo cp $HOME/.dotfiles/.misc/configs/etc-X11-xorg.conf.d/* /etc/X11/xorg.conf.d/
 
 #+end_src
 
@@ -387,33 +387,33 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  git clone --depth=1 https://aur.archlinux.org/paru-bin.git $HOME/paru-bin
-  cd $HOME/paru-bin
-  makepkg -si
-  cd $HOME
-  rm -rf $HOME/paru-bin
+git clone --depth=1 https://aur.archlinux.org/paru-bin.git $HOME/paru-bin
+cd $HOME/paru-bin
+makepkg -si
+cd $HOME
+rm -rf $HOME/paru-bin
 
 #+end_src
 
 *** Installing packages from aur
 
 #+begin_src shell :tangle arch_install3.sh
-  paru -S devour google-java-format nodejs-neovim dmenu-bluetooth
+paru -S devour google-java-format nodejs-neovim dmenu-bluetooth
 #+end_src
 
 ** Updating remote url of my repos.
 
 #+begin_src shell :tangle arch_install3.sh
 
-  cd $HOME/.dotfiles
-  git remote set-url --push origin git@github.com:sadikeey/dotfiles.git
+cd $HOME/.dotfiles
+git remote set-url --push origin git@github.com:sadikeey/dotfiles.git
 
-  cd $HOME/.local/src/dmenu
-  git remote set-url --push origin git@github.com:sadikeey/dmenu.git
+cd $HOME/.local/src/dmenu
+git remote set-url --push origin git@github.com:sadikeey/dmenu.git
 
-  cd $HOME/.config/emacs
-  git remote set-url --push origin git@github.com:sadikeey/emacs.git
-  cd $HOME
+cd $HOME/.config/emacs
+git remote set-url --push origin git@github.com:sadikeey/emacs.git
+cd $HOME
 
 #+end_src
 ** Misc
@@ -422,8 +422,7 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  # Setting Wallpaper
-  cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
+cp $HOME/.dotfiles/.misc/wall.jpg $HOME/.config/
 
 #+end_src
 
@@ -431,8 +430,8 @@ This is a dirty little script to automatically install and setup a working arch 
 
 #+begin_src shell :tangle arch_install3.sh
 
-  rm $HOME/bash*
-  mv $HOME/.icons $HOME/.local/share/icons
+rm $HOME/bash*
+mv $HOME/.icons $HOME/.local/share/icons
 
 #+end_src
 
@@ -441,17 +440,17 @@ This will login automatically without asking password, I know this is not secure
 
 #+begin_src shell :tangle arch_install3.sh
 
-  echo "##############################################"
-  echo "##    Enter your username for autologin:    ##"
-  echo "##############################################"
-  read $username
+echo "##############################################"
+echo "##    Enter your username for autologin:    ##"
+echo "##############################################"
+read $username
 
-  [ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-  sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin $username %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
-  sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+[ -d "/etc/systemd/system/getty@tty1.service.d/" ] || sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
+sudo touch /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo echo "[Services]" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo echo "ExecStart=" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin $username %I $TERM" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
+sudo echo "Type=simple" >> /etc/systemd/system/getty@tty1.service.d/autologin.conf
 
 #+end_src
 
@@ -459,11 +458,11 @@ This will login automatically without asking password, I know this is not secure
 
 #+begin_src shell :tangle arch_install3.sh
 
-  echo "#################################################"
-  echo "## You have successfully installed the system! ##"
-  echo "#################################################"
-  sleep 2
-  exit 
+echo "#################################################"
+echo "## You have successfully installed the system! ##"
+echo "#################################################"
+sleep 2
+exit
 
 #+end_src
 

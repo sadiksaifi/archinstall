@@ -42,9 +42,9 @@ echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
 
 pacman --needed --ask 4 -Syy - < pkglist.txt || error "Failed to install required packages."
 
-systemctl enable NetworkManager 
+systemctl enable NetworkManager
 systemctl enable libvirtd
-systemctl enable tlp 
+systemctl enable tlp
 systemctl enable auto-cpufreq
 systemctl enable bluetooth
 

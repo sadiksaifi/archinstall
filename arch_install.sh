@@ -14,7 +14,7 @@ echo "##########################################################################
 echo "##    Enter drive(/dev/drive_name) and create root(50G+), efi(512M+), home(rest), swap(RAMx2G+) partition:   ##"
 echo "###############################################################################################################"
 read drive
-cfdisk $drive 
+cfdisk $drive
 sleep 2
 lsblk -f
 
@@ -22,7 +22,7 @@ echo "######################################################"
 echo "##    Enter Root partition as (/dev/drive_name):    ##"
 echo "######################################################"
 read partition
-mkfs.ext4 $partition 
+mkfs.ext4 $partition
 
 echo "#####################################################"
 echo "##    Enter EFI partition as (/dev/drive_name):    ##"
@@ -43,10 +43,10 @@ read swappartition
 mkswap $swappartition
 swapon $swappartition
 
-mount $partition /mnt 
+mount $partition /mnt
 mkdir -p /mnt/boot/EFI
 mkdir -p /mnt/home
-mount $efipartition /mnt/boot/EFI 
+mount $efipartition /mnt/boot/EFI
 mount $homepartition /mnt/home
 
 pacstrap /mnt base linux linux-firmware
