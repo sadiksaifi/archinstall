@@ -114,7 +114,7 @@ xmonad-contrib
 xorg
 xorg-xclipboard
 xorg-xinit
-xsel
+xclip
 xwallpaper
 zathura
 zathura-pdf-mupdf

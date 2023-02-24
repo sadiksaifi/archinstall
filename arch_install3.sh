@@ -39,7 +39,7 @@ makepkg -si
 cd $HOME
 rm -rf $HOME/paru-bin
 
-paru -S devour google-java-format nodejs-neovim dmenu-bluetooth
+paru -S google-java-format nodejs-neovim dmenu-bluetooth
 
 cd $HOME/.dotfiles
 git remote set-url --push origin git@github.com:sadikeey/dotfiles.git

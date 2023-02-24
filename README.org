@@ -383,7 +383,7 @@ sudo cp $HOME/.dotfiles/.misc/configs/etc-X11-xorg.conf.d/* /etc/X11/xorg.conf.d
 
 ** AUR helper(paru)
 
-*** Installing pare
+*** Installing paru
 
 #+begin_src shell :tangle arch_install3.sh
 
@@ -398,7 +398,7 @@ rm -rf $HOME/paru-bin
 *** Installing packages from aur
 
 #+begin_src shell :tangle arch_install3.sh
-paru -S devour google-java-format nodejs-neovim dmenu-bluetooth
+paru -S google-java-format nodejs-neovim dmenu-bluetooth
 #+end_src
 
 ** Updating remote url of my repos.
