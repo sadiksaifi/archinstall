@@ -53,6 +53,7 @@ onlyoffice-bin
 otf-font-awesome
 pandoc-cli
 papirus-icon-theme
+perl-file-mimeinfo
 picom-ibhagwan-git
 pipewire
 pipewire-audio
@@ -92,6 +93,7 @@ ttf-roboto-mono
 ttf-sourcecodepro-nerd
 ttf-ubuntu-font-family
 ttf-ubuntu-nerd
+ueberzug
 udiskie
 unclutter
 unrar
