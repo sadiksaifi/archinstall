@@ -1,6 +1,8 @@
 #+TITLE: ARCH INSTALL SCRIPT
 #+AUTHOR: SADIK SAIFI
 
+# TEST
+
 * ABOUT
 This is a dirty little script to automatically install and setup a working arch linux environment with my most used [[./pkglist.txt][programs]] and [[https://github.com/sadikeey/dotfiles][dotfiles]].
 
